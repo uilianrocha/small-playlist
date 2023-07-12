@@ -1,0 +1,100 @@
+body {
+    background-image: linear-gradient(
+    rgb(59, 88, 93),
+    rgb(29, 40, 42)
+    );
+    height:auto;
+    color:white;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+button {
+    background-color: inherit;
+    color: inherit;
+    border: none;
+}
+
+#playlist {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 0.5em 0 4em 0;
+}
+
+
+#cover {
+    width: 450px;
+
+}
+
+#below-cover {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 3em 0 1em 0;
+}
+
+#button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.button {
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.biggest-button {
+    font-size: 4em;
+}
+
+.button-nav {
+    font-size: 3em;
+}
+
+#song-title {
+    font-size: 1.5em;
+    font-weight: bolder;
+}
+
+#artist {
+    margin: 0.3em 0 0 0;
+
+}
+
+#progress-bar {
+    background-color: rgb(139, 156, 153);
+    height: 3px;
+    width: 100%;
+    border-radius: 15px;
+    margin-bottom: 1.5em;
+}
+
+#current-progress {
+    --progress: 0%;
+    background-color: white;
+    height: inherit;
+    width: var(--progress);
+    border-radius: inherit;
+
+}
+
+.grey-color {
+    color: rgb(139, 156, 153);
+
+}
+
+#progress-container {
+    padding-bottom: 1em;
+    cursor: pointer;
+}
+
+.button-active {
+    color: #1ED760;
+}
