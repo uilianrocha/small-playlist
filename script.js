@@ -5,6 +5,7 @@ const cover = document.getElementById('cover');
 const play = document.getElementById('play');
 const next = document.getElementById('next');
 const previous = document.getElementById('previous');
+const likeButton = document.getElementById('like');
 const currentProgress = document.getElementById('current-progress');
 const progressContainer = document.getElementById('progress-container');
 const shuffleButton = document.getElementById('shuffle');
@@ -16,36 +17,47 @@ const iWillFind = {
     songTitle : "I Will Find",
     artist : "Vintage Culture",
     file: "iwillfind",
+    liked: false
 };
 
 const clintEastwood = {
     songTitle : "Clint Eastwood",
     artist : "Gorillaz",
-    file: "clint_eastwood"
+    file: "clint_eastwood",
+    liked: false
 };
 
 const richAndSad = {
     songTitle : "Rich and Sad",
     artist : "Post Malone",
-    file: "rich-and-sad"
+    file: "rich-and-sad",
+    liked: false
 };
 
 const theKids = {
     songTitle : "The Kids Aren't Alright",
     artist : "Fall Out Boy",
-    file: "theKidsArentAlright"
+    file: "theKidsArentAlright",
+    liked: false
 };
 
 const timeOfTheSeason = {
     songTitle : "Time of the Season",
     artist : "The Zombies",
-    file: "timeOfTheSeason"
+    file: "timeOfTheSeason",
+    liked: false
 };
 
 let isPlaying = false;
 let isShuffled = false;
 let repeatOn = false;
-const playlist = [iWillFind, clintEastwood, richAndSad, theKids, timeOfTheSeason];
+const playlist = JSON.parse(localStorage.getItem('playlist')) ?? [
+    iWillFind,
+    clintEastwood,
+    richAndSad,
+    theKids,
+    timeOfTheSeason,
+];
 let shuffledPlaylist = [...playlist]
 let index = 0;
 
@@ -79,6 +91,7 @@ function loadSong(){
     song.src = `songs/${shuffledPlaylist[index].file}.mp3`;
     songTitle.innerText = shuffledPlaylist[index].songTitle;
     artist.innerText = shuffledPlaylist[index].artist;
+    likeButtonRender();
 }
 
 function previousSong(){
@@ -103,8 +116,21 @@ function nextSong(){
     playSong();
 }
 
+function likeButtonRender(){
+    if (shuffledPlaylist[index].liked === true){
+        likeButton.querySelector('.bi').classList.remove('bi-heart');
+        likeButton.querySelector('.bi').classList.add('bi-heart-fill');
+        likeButton.classList.add('button-active');
+    }
+    else {
+        likeButton.querySelector('.bi').classList.add('bi-heart');
+        likeButton.querySelector('.bi').classList.remove('bi-heart-fill');
+        likeButton.classList.remove('button-active');
+    }
+    }
+
 function updateProgress(){
-    const barWidth = (song.currentTime/song.duration)*100;
+    let barWidth = ((song.currentTime / song.duration)*100) + '%';
     currentProgress.style.setProperty('--progress', `${barWidth}%`);
     songTime.innerText = timeToHourMinSec(song.currentTime);
 
@@ -165,7 +191,7 @@ function repeatSong(){
 
 // Create a function to display the time in HH/MM/SS 
 
-function timeToHourMinSec(originalNumber){
+ function timeToHourMinSec(originalNumber){
     let hours = Math.floor(originalNumber/3600);
     let min = Math.floor((originalNumber - hours * 3600)/60);
     let secs = Math.floor(originalNumber - hours * 3600 - min * 60);
@@ -179,6 +205,17 @@ function updateTotalTime(){
     totalTime.innerText = timeToHourMinSec(song.duration);
 }
 
+function likeButtonClicked(){
+    if(shuffledPlaylist[index].liked === false){
+        shuffledPlaylist[index].liked = true;
+    }
+    else {
+        shuffledPlaylist[index].liked = false;
+    }
+    likeButtonRender();
+    localStorage.setItem('playlist', JSON.stringify(playlist));
+}
+
 loadSong();
 
 play.addEventListener('click', playPauseDecider);
@@ -190,3 +227,4 @@ song.addEventListener('loadedmetadata', updateTotalTime);
 progressContainer.addEventListener('click', jumpTo);
 shuffleButton.addEventListener('click', shuffleTo);
 repeatButton.addEventListener('click', repeatSong);
+likeButton.addEventListener('click', likeButtonClicked);
